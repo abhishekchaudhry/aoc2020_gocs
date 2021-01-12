@@ -7,6 +7,15 @@ import (
 	"os"
 )
 
+func contains(s []string, e string) bool {
+	for _, a := range s {
+		if a == e {
+			return true
+		}
+	}
+	return false
+}
+
 func UpperRange(a int,b int) (int,int){
 	mid := (float64(a) + float64(b))/2
 	first := float64(b) - mid
@@ -36,7 +45,8 @@ func main(){
 	defer file.Close()
 
 	var line []string
-	var seats[]int
+	var seats[]string
+	var seats1[]int
 	scanner :=bufio.NewScanner(file)
 	for scanner.Scan(){
 		lines :=scanner.Text()
@@ -54,6 +64,7 @@ func main(){
 		CU:=7
 		CL:=0
 		line1 :=line[i]
+
 		for x:=range line1{
 			//fmt.Println(string(line1[x]))
 			y:=string(line1[x])
@@ -88,14 +99,23 @@ func main(){
 
 		}
 		seat_id:= (L * 8) + CL
-		seats=append(seats,seat_id)
-		fmt.Println("row id is -->",L)
-		fmt.Println("column id is-->",CU)
-		fmt.Println("seat id is -->",seat_id)
+		seats1=append(seats1,seat_id)
+		seats=append(seats,string(seat_id))
+				//fmt.Println("row id is -->",L)
+		//fmt.Println("column id is-->",CU)
+		//fmt.Println("seat id is -->",seat_id)
 	}
 
-		for i:=1;i <len(seats);i++{
-			if seats[0] < seats[i] {seats[0] = seats[i]}
+		for i:=1;i <len(seats1);i++{
+			if seats1[0] < seats1[i] {seats1[0] = seats1[i]}
 		}
-		fmt.Println("the largest seat id is:",seats[0])
+		fmt.Println("the largest seat id is:",seats1[0])
+
+		//solution for part2
+	for i := 0; i < 128*8; i++ {
+		if contains(seats, string(i+1)) && contains(seats, string(i-1)) && !contains(seats, string(i)) {
+			fmt.Println("the seat ID is ",i)
+		}
+	}
+
 }
